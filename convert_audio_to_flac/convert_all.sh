@@ -11,7 +11,7 @@ fi
 
 format=$1
 
-for i in *.$format; do
+for i in *."$format"; do
   name=${i%.*}
   echo "$name"
   (ffmpeg -hide_banner -i "$i" "${name}.flac" && mv "$i" /tmp/) &
