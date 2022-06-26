@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC>
+<html>
+<head>
+<title>Audius Downloader 1.2.ok visuals disabled</title>
+<meta name="generator" content="Easy Adobe Truetype Media Error webfonts v1.2.ok" />
+<meta name="date" content="2020/10/28" />
+<meta name="version" content="1.2.ok" /><meta name="description" content="Audius.co downloader with visuals disabled and option ?search=[query]">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+  var ssqry="";
+  var sResult;
+  function fnSearch(){
+    var i=0;
+    var scnsnr="";
+    i=Math.floor(Math.random() * 3.999);if(i==0){}else{scnsnr=i.toString();}
+    if(scnsnr=="1"){scnsnr="2";}
+    ssqry="https://discoveryprovider"+scnsnr+".audius.co/v1/tracks/search?query="+document.getElementById("txtSearch").value;
+    document.getElementById("fraResult").src=ssqry;
+    $.get(ssqry, function(data, status){ 
+      sResult=data;
+      console.log(status);
+    });
+  }
+  function fnLoadAudio(iResultNr){
+    var i;
+    var sTrackId;
+    var sTrackArtist;
+    var sTrackName;
+    var sTrackImage;
+    var sTrackURL;
+    var sPlayer;
+    if(iResultNr==1){
+      console.log(sResult["data"][0]["id"]);
+      sTrackId=sResult["data"][0]["id"];
+      sTrackArtist=sResult["data"][0]["user"]["handle"];
+      sTrackName=sTrackArtist+" - "+sResult["data"][0]["title"];
+      sTrackImage=sResult["data"][0]["artwork"]["150x150"];
+      sPlayer="<audio id='audPlayer' src='https://creatornode.audius.co/tracks/stream/"+sTrackId+"' controls></audio> "+sTrackName+"<br />"
+      document.getElementById("frmPlayers").innerHTML=sPlayer;
+   }else{
+      sPlayer="";
+      var iLength=sResult["data"]["length"];
+      for(i=0;i<iLength;i++){
+        console.log(sResult["data"][i]["id"]);
+        sTrackId=sResult["data"][i]["id"];
+        sTrackArtist=sResult["data"][i]["user"]["handle"];
+        sTrackName=sTrackArtist+" - "+sResult["data"][i]["title"];
+        sTrackImage=sResult["data"][i]["artwork"]["150x150"];
+        sPlayer+="<audio id='audPlayer' src='https://creatornode.audius.co/tracks/stream/"+sTrackId+"' controls></audio> "+sTrackName+"<br />"
+
+      }
+      document.getElementById("frmPlayers").innerHTML=sPlayer;
+    }
+  }
+</script>
+</head>
+<body style="font-family:monospace;tahoma,arial,verdana,sans">
+<form id="frmDownloader" onsubmit="javascript:event.preventDefault();fnSearch();">
+<iframe id="fraResult" src="" width="800" height="100" border="0" style="width: 800px; height:100px; border:0"></iframe><br />
+<input type="text" id="txtSearch" />
+<input type="button" id="btnSearch" value="Search" onclick="javascript:fnSearch();" />
+<input type="button" id="btnAudio" value="Fetch 1" onclick="javascript:fnLoadAudio(1);" />
+<input type="button" id="btnAudio" value="Fetch all" onclick="javascript:fnLoadAudio(0);" /> (max. 10)
+</form>
+Audius.co downloader: enter search term.. click [Fetch] to load audio.. (right-)click the audio element(s) for the audio content..<br /><br />
+<form id="frmPlayers">
+<audio id='audPlayer' src='' controls></audio>
+</form>
+<script>
+  var url_string = window.location.href
+  var url = new URL(url_string);
+  var c = url.searchParams.get("search");
+  if(c.length>1){
+    console.log(c);
+    document.getElementById('txtSearch').value=decodeURIComponent(c);
+    fnSearch();
+    window.setTimeout(function(){fnLoadAudio(1);},2500);
+  }
+</script>
+<br>
+<a href="https://github.com/free-music-by-eatme/butterchurn/blob/master/LICENSE" target="_blank">visuals MIT license</a><br>
+built with <a href="https://audiusproject.github.io/api-docs/" target="_blank">Audius.co API</a><br>
+</body>
+</html>
