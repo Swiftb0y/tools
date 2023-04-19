@@ -2,7 +2,7 @@
 
 # TODO implement more sophisticated strategy using `window.__sc_hydration` JSON
 
-SC_COVERARTWORKURL_REGEX='https:\/\/[[:alnum:]]{2}\.sndcdn\.com\/artworks-[[:alnum:]]+-[[:alnum:]]+-([[:alnum:]]+).jpg'
+SC_COVERARTWORKURL_REGEX='https://[[:alnum:]]{2}\.sndcdn\.com/artworks-[[:alnum:]]+-[[:alnum:]]+-([[:alnum:]]+).jpg'
 
 curl -s "$1" |
     grep -oE "$SC_COVERARTWORKURL_REGEX" - | # extract all urls that look like coverarts
